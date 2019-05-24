@@ -12,10 +12,12 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageView imageView;
     private TextView textView;
-    private TextView tvite;
+    private TextView textVite;
     private EditText editText;
     private Button button;
     private int vite;
+    private String parola;
+    private Impiccato impiccato;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,43 +25,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         imageView = findViewById(R.id.image);
         textView = findViewById(R.id.output);
-        tvite = findViewById(R.id.vite);
+        textVite = findViewById(R.id.vite);
         editText = findViewById(R.id.input);
         button = findViewById(R.id.button);
         button.setOnClickListener(this);
-        textView.setText(Main2Activity.impiccato.getVuoto(), 0, Main2Activity.impiccato.getVuoto().length);
-        this.vite = Main2Activity.impiccato.getVite();
+        textView.setText(impiccato.getVuoto(), 0, impiccato.getVuoto().length);
+        this.vite = impiccato.getVite();
+        Intent i = getIntent();
+        parola = i.getStringExtra("parola");
+        impiccato = new Impiccato(parola);
     }
 
     @Override
     public void onClick(View v) {
-        String vites = "" + vite;
-        this.tvite.setText(vites);
-        textView.setText(Main2Activity.impiccato.getVuoto(), 0, Main2Activity.impiccato.getVuoto().length);
+        textView.setText(impiccato.getVuoto(), 0, impiccato.getVuoto().length);
         if (vite >= 0) {
             boolean check;
             String input = editText.getText().toString();
             if (input.length() == 1) {
-                check = Main2Activity.impiccato.inserisciLettera(input.charAt(0));
+                check = impiccato.inserisciLettera(input.charAt(0));
                 if (check) {
-                    Main2Activity.impiccato.rimuoviVita();
+                    impiccato.rimuoviVita();
                     }
                 } else {
-                    check = Main2Activity.impiccato.insericiParola(input);
+                    check = impiccato.insericiParola(input);
                     if (check) {
-                        Main2Activity.impiccato.rimuoviVita();
+                        impiccato.rimuoviVita();
                     }
                 }
             } else {
-                Intent i = new Intent(getApplicationContext(), Perso.class);
-                startActivity(i);
-                setContentView(R.layout.activity_perso);
-            }
-            if (Main2Activity.impiccato.haiVinto()) {
                 Intent i = new Intent(getApplicationContext(), Vinto.class);
+                i.putExtra("vinto","Hai vinto!");
                 startActivity(i);
-                setContentView(R.layout.activity_vinto);
+                finish();
             }
+            if (impiccato.haiVinto()) {
+                Intent i = new Intent(getApplicationContext(), Vinto.class);
+                i.putExtra("vinto","Hai perso!");
+                startActivity(i);
+                finish();
+            }
+        vite = impiccato.getVite();
+        String vites = "" + vite;
+        this.textVite.setText(vites);
         switch (vite) {
             case 6:
                 imageView.setImageResource(R.drawable.hangman_6);
@@ -83,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 imageView.setImageResource(R.drawable.hangman_0);
                 break;
             }
-        vite = Main2Activity.impiccato.getVite();
+            editText.setText("");
+
         }
     }

@@ -11,7 +11,6 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     private EditText editText;
     private Button button;
     private String parola;
-    public static Impiccato impiccato;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +23,9 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        this.parola = (editText.getText().toString());
+        parola = (editText.getText().toString());
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
-        impiccato = new Impiccato(this.parola);
+        i.putExtra("parola",parola);
         startActivity(i);
-        setContentView(R.layout.activity_main);
     }
 }

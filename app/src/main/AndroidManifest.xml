@@ -20,7 +20,6 @@
         </activity>
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".Vinto"></activity>
-        <activity android:name=".Perso"></activity>
     </application>
 
 </manifest>
