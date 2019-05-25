@@ -11,14 +11,32 @@
         android:textSize="50sp"
         android:layout_centerInParent="true"/>
 
-    <Button
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="62dp"
-        android:text="Nuova partita"
-        android:textAllCaps="false" />
+        android:layout_marginBottom="0dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/nuova_partita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="62dp"
+            android:text="Nuova partita"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/chiudi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chiudi"
+            android:textAllCaps="false" />
+    </LinearLayout>
+
 
 
 </RelativeLayout>

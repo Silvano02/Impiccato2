@@ -3,6 +3,7 @@ package com.example.silvano.impiccato;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,9 +21,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Impiccato impiccato;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent i = getIntent();
+        parola = i.getStringExtra("parola");
+        impiccato = new Impiccato(parola);
         imageView = findViewById(R.id.image);
         textView = findViewById(R.id.output);
         textVite = findViewById(R.id.vite);
@@ -31,40 +35,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         button.setOnClickListener(this);
         textView.setText(impiccato.getVuoto(), 0, impiccato.getVuoto().length);
         this.vite = impiccato.getVite();
-        Intent i = getIntent();
-        parola = i.getStringExtra("parola");
-        impiccato = new Impiccato(parola);
     }
 
-    @Override
-    public void onClick(View v) {
+    //faccio un metodo così è piu comodo per aggiungere l'OnKeyListener
+
+    private void inserimento()  {
         textView.setText(impiccato.getVuoto(), 0, impiccato.getVuoto().length);
-        if (vite >= 0) {
             boolean check;
-            String input = editText.getText().toString();
+            String input = editText.getText().toString().trim();
             if (input.length() == 1) {
                 check = impiccato.inserisciLettera(input.charAt(0));
                 if (check) {
                     impiccato.rimuoviVita();
-                    }
-                } else {
-                    check = impiccato.insericiParola(input);
-                    if (check) {
-                        impiccato.rimuoviVita();
-                    }
                 }
             } else {
-                Intent i = new Intent(getApplicationContext(), Vinto.class);
-                i.putExtra("vinto","Hai vinto!");
-                startActivity(i);
-                finish();
+                check = impiccato.insericiParola(input);
+                if (check) {
+                    impiccato.rimuoviVita();
+                }
             }
-            if (impiccato.haiVinto()) {
-                Intent i = new Intent(getApplicationContext(), Vinto.class);
-                i.putExtra("vinto","Hai perso!");
-                startActivity(i);
-                finish();
-            }
+        if (impiccato.haiVinto())   {
+            Intent i = new Intent(getApplicationContext(), Vinto.class);
+            i.putExtra("vinto","Hai vinto!");
+            startActivity(i);
+            finish();
+        }
         vite = impiccato.getVite();
         String vites = "" + vite;
         this.textVite.setText(vites);
@@ -90,8 +85,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case 0:
                 imageView.setImageResource(R.drawable.hangman_0);
                 break;
-            }
-            editText.setText("");
-
         }
+        if (vite <= 0) {
+            Intent i = new Intent(getApplicationContext(), Vinto.class);
+            i.putExtra("vinto", "Hai perso!");
+            startActivity(i);
+            finish();
+        }
+        editText.setText("");
     }
+
+
+    @Override
+    public void onClick(View v) {
+        this.inserimento();
+        }
+}

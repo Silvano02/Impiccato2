@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class Main2Activity extends AppCompatActivity implements View.OnClickListener {
+public class InserimentoParola extends AppCompatActivity implements View.OnClickListener {
     private EditText editText;
     private Button button;
     private String parola;
@@ -24,8 +24,9 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         parola = (editText.getText().toString());
-        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        Intent i = new Intent(InserimentoParola.this, MainActivity.class);
         i.putExtra("parola",parola);
         startActivity(i);
+        finish();
     }
 }
